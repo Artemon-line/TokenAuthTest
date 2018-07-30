@@ -1,4 +1,4 @@
-const Users = require('../models/user').User;
+const Users = require('../db/db').User;
 const Op = require('sequelize').Op;
 
 function addUser(user) { return Users.create(user) };

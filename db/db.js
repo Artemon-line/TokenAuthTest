@@ -1,10 +1,5 @@
-// const Sequelize = require('sequelize');
-// var sequelize = new Sequelize(require('./config').dbConnectionString);
-// require('sequelize-values')(sequelize);
-
-// module.exports = sequelize;
-
 const config = require('../config');
+const UserModel = require('../models/user');
 
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(config.dbName, 'username', 'password', {
@@ -23,6 +18,13 @@ const sequelize = new Sequelize(config.dbName, 'username', 'password', {
     storage: './database.sqlite'
 });
 
-require('sequelize-values')(sequelize);
+const User = UserModel(sequelize, Sequelize);
 
-module.exports = sequelize;
+const init = () => sequelize.sync({ force: true })
+    .then(function(err) {
+        console.log('Database synced');
+    }, function(err) {
+        console.log('An error occurred while syncing database:', err);
+    });
+
+module.exports = { User, init };
